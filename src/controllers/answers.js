@@ -3,6 +3,7 @@ const Answer = require("../models/Answer");
 const Student = require("../models/Student");
 
 module.exports = {
+    //função que adiciona uma reposta a uma pergunta
     async store(req, res){
         const {answer} = req.body;
     
