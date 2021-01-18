@@ -2,51 +2,50 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable("perguntas", {
+    queryInterface.createTable("questions", {
       id: {
-        type: Sequelize.INTEGER, 
+        type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      titulo: {
+      title: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
-      descricao: {
+      description: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
-      imagem: {
+      image: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       gist: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
-      aluno_id: {
+      student_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: "alunos",
+          model: "students",
           key: "id"
-        }
-      },
-      titulo: {
-        type: Sequelize.STRING,
-        allowNull: false
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       }
-    })
+
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("perguntas");
+    queryInterface.dropTable("questions");
   }
 };

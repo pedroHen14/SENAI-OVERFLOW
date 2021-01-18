@@ -1,11 +1,11 @@
 const { Model, DataTypes } = require("sequelize");
 
 class Category extends Model {
-    /*
-        aqui inicializamos nossos campos da tabela
-        os campos automaticos nao precisam ser declarados
-    */
-    static init(sequelize){
+    /**
+     * aqui configuramos os campos da tabela
+     * os campos automáticos não precisam ser declarados
+     */
+    static init(sequelize) {
         super.init(
             {
                 description: DataTypes.STRING
@@ -16,11 +16,11 @@ class Category extends Model {
         )
     }
 
-    /*
-        Aqui configuramos os relacionamentos
-    */
-    static associate(models){
-        this.belongsToMany(models.Question, {through: "question_category" });
+    /**
+     * aqui configuramos os relacionamentos 
+     */
+    static associate(models) {
+        this.belongsToMany(models.Question, { through: "question_category" });
     }
 }
 

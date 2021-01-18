@@ -1,40 +1,28 @@
 const express = require("express");
 
-const alunoController = require("./controllers/alunos");
-const perguntaController = require("./controllers/perguntas");
-const respostaController = require("./controllers/answers");
+const studentController = require("./controllers/students");
+const questionController = require("./controllers/questions");
+const answerController = require("./controllers/answers");
+const feedController = require("./controllers/feed");
 
 const routes = express.Router();
 
-/*************************ROTAS DE ALUNOS*******************************/
+//rotas de alunos
+routes.get("/students", studentController.index);
+routes.get("/students/:id", studentController.find);
+routes.post("/students", studentController.store);
+routes.delete("/students/:id", studentController.delete);
+routes.put("/students/:id", studentController.update);
 
-//configuração da rota - GET
-routes.get("/alunos", alunoController.listarAlunos);
+//rotas de perguntas
+routes.post("/questions", questionController.store);
+routes.delete("/questions/:id", questionController.delete);
+routes.put("/questions/:id", questionController.update);
 
-//configuração da rota - GET pelo ID
-routes.get("/alunos/:id", alunoController.buscarAluno);
+//rotas de respostas
+routes.post("/questions/:id/answers", answerController.store);
 
-//configuração da rota - POST
-routes.post("/alunos", alunoController.adicionarAlunos);
-
-//configuração da rota - DELETE
-routes.delete("/alunos/:id", alunoController.deletarAluno);
-
-//configuração da rota - PUT
-routes.put("/alunos/:id", alunoController.editarAluno);
-
-/*************************ROTAS DE PERGUNTAS*******************************/
-
-routes.get("/perguntas/:id", perguntaController.index)
-
-routes.post("/perguntas", perguntaController.store);
-
-routes.put("/perguntas/:id", perguntaController.update);
-
-routes.delete("/perguntas/:id", perguntaController.delete);
-
-/**************************ROTAS DE RESPOSTAS****************************/
-
-routes.post("/perguntas/:id/respostas", respostaController.store);
+//rota feed
+routes.get("/feed", feedController.index);
 
 module.exports = routes;

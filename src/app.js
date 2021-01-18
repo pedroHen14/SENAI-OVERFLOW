@@ -1,7 +1,7 @@
-//importando o express
+//importa o express
 const express = require("express");
 
-//importar as rotas
+//importa as rotas
 const routes = require("./routes");
 
 require("./database");

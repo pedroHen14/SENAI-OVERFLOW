@@ -1,10 +1,11 @@
-const { DataTypes, Model } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 
 class Answer extends Model {
-    static init(sequelize){
+    static init(sequelize) {
         super.init(
             {
-                answer: DataTypes.TEXT
+                description: DataTypes.STRING,
+                student_id: DataTypes.INTEGER
             },
             {
                 sequelize,
@@ -12,12 +13,9 @@ class Answer extends Model {
         )
     }
 
-    /*
-        Aqui configuramos os relacionamentos
-    */
-    static associate(models){
-        this.belongsTo(models.Student, {foreignKey: "aluno_id"});
+    static associate(models) {
         this.belongsTo(models.Question);
+        this.belongsTo(models.Student);
     }
 }
 

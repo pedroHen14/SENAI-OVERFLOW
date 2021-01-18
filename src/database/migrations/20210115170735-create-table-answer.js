@@ -4,42 +4,46 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     queryInterface.createTable("answers", {
       id: {
-        type: Sequelize.INTEGER, 
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
-      answer: {
+      description: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: false
       },
-      question_id:{
+      question_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "perguntas",
+          model: "questions",
           key: "id"
-        }
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
-      aluno_id: {
+      student_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "alunos",
+          model: "students",
           key: "id"
-        }
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       }
     })
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable("answers")
+    queryInterface.dropTable("answers");
   }
 };

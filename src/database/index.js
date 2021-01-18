@@ -1,29 +1,29 @@
 const Sequelize = require("sequelize");
 const dbConfig = require("../config/database");
 
-//import dos models
+//imports dos models
 const Student = require("../models/Student");
 const Question = require("../models/Question");
 const Category = require("../models/Category");
 const Answer = require("../models/Answer");
 
-const conexao = new Sequelize(dbConfig);
+const connection = new Sequelize(dbConfig);
 
 //inicializa os models
-Student.init(conexao);
-Question.init(conexao);
-Category.init(conexao);
-Answer.init(conexao);
+Student.init(connection);
+Question.init(connection);
+Category.init(connection);
+Answer.init(connection);
+
 
 //inicializa os relacionamentos
-Student.associate(conexao.models);
-Question.associate(conexao.models);
-Category.associate(conexao.models);
-Answer.associate(conexao.models);
+Student.associate(connection.models);
+Question.associate(connection.models);
+Category.associate(connection.models);
+Answer.associate(connection.models);
 
-
-for (let assoc of Object.keys(Question.associations)) {
-    for (let accessor of Object.keys(Question.associations[assoc].accessors)) {
-        console.log(Question.name + '.' + Question.associations[assoc].accessors[accessor] + '()');
-    }
-}
+// for (let assoc of Object.keys(Category.associations)) {
+//     for (let accessor of Object.keys(Category.associations[assoc].accessors)) {
+//         console.log(Category.name + '.' + Category.associations[assoc].accessors[accessor] + '()');
+//     }
+// }
