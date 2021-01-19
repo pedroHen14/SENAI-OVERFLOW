@@ -1,4 +1,7 @@
 const Student = require("../models/Student");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const auth = require("../config/auth.json");
 
 module.exports = {
     //função que vai ser executada pela rota
@@ -53,10 +56,27 @@ module.exports = {
             if (student)
                 return res.status(400).send({ error: "Aluno já cadastrado" });
 
-            student = await Student.create({ ra, name, email, password });
+            const passwordCript = bcrypt.hashSync(password)
+
+            student = await Student.create({ 
+                ra, 
+                name, 
+                email, 
+                password: passwordCript 
+            });
+
+            const token = jwt.sign({studentId: student.id, studentName: student.name}, auth.secret);
 
             //retornar resposta de sucesso
-            res.status(201).send(student);
+            res.status(201).send({
+                student: {
+                    studentId: student.id,
+                    name: student.name,
+                    ra: student.ra,
+                    email: student.email
+                },
+                token
+            });
         } catch (error) {
             console.log(error);
             res.status(500).send(error);
