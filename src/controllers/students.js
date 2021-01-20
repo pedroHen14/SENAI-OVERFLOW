@@ -68,7 +68,8 @@ module.exports = {
             const token = jwt.sign({studentId: student.id, studentName: student.name}, auth.secret);
 
             //retornar resposta de sucesso
-            res.status(201).send({
+            res.status(201)
+            .send({
                 student: {
                     studentId: student.id,
                     name: student.name,
@@ -76,7 +77,8 @@ module.exports = {
                     email: student.email
                 },
                 token
-            });
+            })
+            ;
         } catch (error) {
             console.log(error);
             res.status(500).send(error);
