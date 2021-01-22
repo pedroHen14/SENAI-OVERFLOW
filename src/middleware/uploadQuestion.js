@@ -1,7 +1,20 @@
+var admin = require("firebase-admin");
+
+var serviceAccount = require("../config/firebase-key.json");
+
+const BUCKET = "senai-overflow-bdfa3.appspot.com";
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: BUCKET,
+});
+
+const bucket = admin.storage().bucket();
+
 const Multer = require("multer");
 
 const uploadQuestions = Multer({
-  storage: Multer.diskStorage({
+  storage: Multer.memoryStorage({
     destination: "uploads/",
     filename: (req, file, callback) => {
       const filename = Date.now() + "." + file.originalname.split(".").pop();

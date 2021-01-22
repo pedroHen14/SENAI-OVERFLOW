@@ -1,7 +1,11 @@
 const express = require("express");
+const Multer = require("multer");
+
+const multer = Multer();
 
 const authMiddleware = require("./middleware/authorization");
-const uploadQuestions = require("./middleware/uploadQuestion");
+// const uploadQuestions = require("./middleware/uploadQuestion");
+const uploadImage = require("./services/firebase");
 
 const studentValidator = require("./validators/studentValidator");
 const questionValidator = require("./validators/questionValidator");
@@ -25,7 +29,7 @@ const routes = express.Router();
 //         }
 
 //         console.log(req.file);
-    
+
 //         res.send(req.file);
 //     }
 
@@ -33,7 +37,7 @@ const routes = express.Router();
 
 // });
 
-//rotas publicas 
+//rotas publicas
 routes.post("/sessions", sessionController.store);
 routes.post("/students", studentValidator.create, studentController.store);
 
@@ -46,12 +50,22 @@ routes.delete("/students/:id", studentController.delete);
 routes.put("/students/:id", studentController.update);
 
 //rotas de perguntas
-routes.post("/questions", uploadQuestions, questionValidator.create, questionController.store);
+routes.post(
+  "/questions",
+  multer.single("image"),
+  uploadImage,
+  questionValidator.create,
+  questionController.store
+);
 routes.delete("/questions/:id", questionController.delete);
 routes.put("/questions/:id", questionController.update);
 
 //rotas de respostas
-routes.post("/questions/:id/answers", answerValidator.create, answerController.store);
+routes.post(
+  "/questions/:id/answers",
+  answerValidator.create,
+  answerController.store
+);
 
 //rota feed
 routes.get("/feed", feedController.index);

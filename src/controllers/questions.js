@@ -36,7 +36,7 @@ module.exports = {
         description: question.description,
         created_at: question.created_at,
         gist: question.gist,
-        image: `http://localhost:3333/${req.file.path}`,
+        image: req.file.firebaseUrl,
       });
     } catch (error) {
       console.log(error);
