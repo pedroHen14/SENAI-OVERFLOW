@@ -1,6 +1,6 @@
-var admin = require("firebase-admin");
+const admin = require("firebase-admin");
 
-var serviceAccount = require("../config/firebase-key.json");
+const serviceAccount = require("../config/firebase-key.json");
 
 const BUCKET = "senai-overflow-bdfa3.appspot.com";
 
@@ -11,10 +11,11 @@ admin.initializeApp({
 
 const bucket = admin.storage().bucket();
 
-const uploadImage = (req, res, next) => {
+const uploadFirebase = (req, res, next) => {
   if (!req.file) return next();
 
   const image = req.file;
+
   const filename = Date.now() + "." + image.originalname.split(".").pop();
 
   const file = bucket.file(filename);
@@ -42,4 +43,4 @@ const uploadImage = (req, res, next) => {
   stream.end(image.buffer);
 };
 
-module.exports = uploadImage;
+module.exports = uploadFirebase; 

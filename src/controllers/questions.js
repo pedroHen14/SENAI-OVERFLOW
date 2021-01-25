@@ -5,7 +5,7 @@ module.exports = {
   index(req, res) {},
 
   async store(req, res) {
-    const { title, description, image, gist, categories } = req.body;
+    const { title, description, gist, categories } = req.body;
 
     const categoriesArray = categories.split(",");
 
@@ -23,7 +23,7 @@ module.exports = {
       let question = await student.createQuestion({
         title,
         description,
-        image: req.file.filename,
+        image: req.file.firebaseUrl,
         gist,
       });
 

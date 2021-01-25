@@ -4,8 +4,8 @@ const Multer = require("multer");
 const multer = Multer();
 
 const authMiddleware = require("./middleware/authorization");
-// const uploadQuestions = require("./middleware/uploadQuestion");
-const uploadImage = require("./services/firebase");
+const uploadQuestions = require("./middleware/uploadQuestions");
+const uploadFirebase = require("./services/uploadFirebase");
 
 const studentValidator = require("./validators/studentValidator");
 const questionValidator = require("./validators/questionValidator");
@@ -52,8 +52,8 @@ routes.put("/students/:id", studentController.update);
 //rotas de perguntas
 routes.post(
   "/questions",
-  multer.single("image"),
-  uploadImage,
+  uploadQuestions,
+  uploadFirebase,
   questionValidator.create,
   questionController.store
 );
