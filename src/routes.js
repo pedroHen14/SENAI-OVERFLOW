@@ -16,6 +16,7 @@ const questionController = require("./controllers/questions");
 const answerController = require("./controllers/answers");
 const feedController = require("./controllers/feed");
 const sessionController = require("./controllers/sessions");
+const categoriesController = require("./controllers/categories");
 
 const routes = express.Router();
 
@@ -69,5 +70,8 @@ routes.post(
 
 //rota feed
 routes.get("/feed", feedController.index);
+
+//rota de categorias
+routes.get("/categories", categoriesController.index);
 
 module.exports = routes;
