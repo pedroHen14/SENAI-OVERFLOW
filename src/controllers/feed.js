@@ -36,6 +36,9 @@ module.exports = {
           },
         ],
         order: [["created_at", "DESC"]],
+        // offset: 5,
+        limit: 5,
+        subQuery: false,
       });
 
       res.send(feed);
