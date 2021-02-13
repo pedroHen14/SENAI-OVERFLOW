@@ -6,6 +6,8 @@ const { errors } = require("celebrate");
 const routes = require("./routes");
 
 const cors = require("cors");
+const Category = require("./models/Category");
+const Question = require("./models/Question");
 
 require("./database");
 
@@ -24,3 +26,14 @@ app.use(routes);
 app.use(errors());
 
 module.exports = app;
+
+for (let assoc of Object.keys(Question.associations)) {
+  for (let accessor of Object.keys(Question.associations[assoc].accessors)) {
+    console.log(
+      Question.name +
+        "." +
+        Question.associations[assoc].accessors[accessor] +
+        "()"
+    );
+  }
+}
