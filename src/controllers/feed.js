@@ -5,21 +5,10 @@ const { Op } = require("sequelize");
 
 module.exports = {
   async index(req, res) {
-    const keyWord = req.query.word;
+    const page = (req.query.page - 1) * 5;
+
     try {
-      // const feedao = await Question.findAll();
-
-      // const json = JSON.parse(JSON.stringify(feedao));
-
-      // const feed = json.map(async (j) => {
-      //   const feeda = await Question.findByPk(j.id);
-      //   console.log(JSON.stringify(JSON.parse(feeda)));
-      //   return feeda;
-      // });
-
-      // const nada = await feed.getCategories();
-
-      if (!keyWord) {
+      if (!req.query.page) {
         const feed = await Question.findAll({
           attributes: [
             "id",
@@ -28,6 +17,7 @@ module.exports = {
             "image",
             "gist",
             "created_at",
+            "StudentId",
           ],
           include: [
             {
@@ -51,19 +41,11 @@ module.exports = {
             },
           ],
           order: [["created_at", "DESC"]],
-          // offset: 5,
-          // limit: 5,
-          // subQuery: false,
         });
+
         res.send(feed);
       } else {
-        const search = await Question.findAll({
-          where: {
-            [Op.or]: {
-              title: { [Op.like]: `%${keyWord}%` },
-              description: { [Op.like]: `%${keyWord}%` },
-            },
-          },
+        const feedPage = await Question.findAll({
           attributes: [
             "id",
             "title",
@@ -71,6 +53,7 @@ module.exports = {
             "image",
             "gist",
             "created_at",
+            "StudentId",
           ],
           include: [
             {
@@ -93,12 +76,12 @@ module.exports = {
               attributes: ["id", "description"],
             },
           ],
+          order: [["created_at", "DESC"]],
+          offset: page,
+          limit: 5,
         });
-
-        res.send(search);
+        res.send(feedPage);
       }
-
-      // console.log(feedLength);
     } catch (error) {
       console.log(error);
       res.status(500).send(error);
