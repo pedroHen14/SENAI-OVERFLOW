@@ -2,12 +2,10 @@
 const express = require("express");
 const { errors } = require("celebrate");
 
+const cors = require("cors");
+
 //importa as rotas
 const routes = require("./routes");
-
-const cors = require("cors");
-const Category = require("./models/Category");
-const Question = require("./models/Question");
 
 require("./database");
 
@@ -18,7 +16,7 @@ app.use(express.json());
 
 app.use(cors());
 
-//definimos a pasta uploads como pública, servindo arquivos estaticos
+//definimos a pasta uploads como pública, servindo arquivos estáticos
 app.use("/uploads", express.static("uploads"));
 
 app.use(routes);
@@ -26,14 +24,3 @@ app.use(routes);
 app.use(errors());
 
 module.exports = app;
-
-for (let assoc of Object.keys(Question.associations)) {
-  for (let accessor of Object.keys(Question.associations[assoc].accessors)) {
-    console.log(
-      Question.name +
-        "." +
-        Question.associations[assoc].accessors[accessor] +
-        "()"
-    );
-  }
-}

@@ -10,8 +10,6 @@ module.exports = {
           model: "questions",
           key: "id"
         },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE"
       },
       category_id: {
         type: Sequelize.INTEGER,
@@ -20,8 +18,6 @@ module.exports = {
           model: "categories",
           key: "id"
         },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE"
       },
       created_at: {
         type: Sequelize.DATE,

@@ -7,16 +7,16 @@ module.exports = (req, res, next) => {
 
   //verifica se o campo foi informado, se não retorna erro
   if (!authorization)
-    return res.status(401).send({ error: "token nao informado" });
+    return res.status(401).send({ error: "Token não informado" });
 
   //separa o prefixo do token
   const [Bearer, token] = authorization.split(" ");
 
-  //verifica se o token esta presente,  se não retorna erro
-  if (!token) return res.status(401).send({ error: "token mal formatado" });
+  //verifica se o token está presente, se não retorna erro
+  if (!token) return res.status(401).send({ error: "Token mal formatado" });
 
   try {
-    //verifica se o token é valido, se não cai no catch
+    //verifica se o token é válido, se não cai no catch
     const payload = jwt.verify(token, auth.secret);
 
     //coloca o id do aluno na requisição
@@ -25,8 +25,7 @@ module.exports = (req, res, next) => {
     //envia a requisição para frente (controller)
     return next();
   } catch (error) {
-    //retorna erro de token invalido
-    console.log(error);
-    res.status(500).send({ error: "token invalido" });
+    //retorna erro de token inválido
+    res.status(401).send({ error: "Token inválido" });
   }
 };

@@ -1,8 +1,10 @@
+const { errors } = require("celebrate");
 const admin = require("firebase-admin");
 
 const serviceAccount = require("../config/firebase-key.json");
 
-const BUCKET = "senai-overflow-bdfa3.appspot.com";
+//alterar para o seu bucket
+const BUCKET = "senai-overflow-2021-01.appspot.com";
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -16,26 +18,28 @@ const uploadFirebase = (req, res, next) => {
 
   const image = req.file;
 
-  const filename = Date.now() + "." + image.originalname.split(".").pop();
+  const fileName = Date.now() + "." + image.originalname.split(".").pop();
 
-  const file = bucket.file(filename);
+  const file = bucket.file(fileName);
 
   const stream = file.createWriteStream({
     metadata: {
-      contentType: image.mimetype,
+      contentType: image.mimeType,
     },
   });
 
-  stream.on("error", (e) => {
-    console.error(e);
+  stream.on("error", (error) => {
+    console.error(error);
+
+    res.status(500).send({ error: "Erro ao subir para o Firebase" });
   });
 
-  stream.on("finish", async () => {
-    //tornando o arquivo publico
-    await file.makePublic();
+  stream.on("finish", () => {
+    file.makePublic();
 
-    //obter a URL publica
-    req.file.firebaseUrl = `https://storage.googleapis.com/${BUCKET}/${filename}`;
+    req.file.fileName = fileName;
+
+    req.file.firebaseUrl = `https://storage.googleapis.com/${BUCKET}/${fileName}`;
 
     next();
   });
@@ -43,4 +47,4 @@ const uploadFirebase = (req, res, next) => {
   stream.end(image.buffer);
 };
 
-module.exports = uploadFirebase; 
+module.exports = uploadFirebase;

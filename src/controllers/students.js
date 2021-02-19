@@ -1,5 +1,7 @@
 const Student = require("../models/Student");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const auth = require("../config/auth.json");
 const { generateToken } = require("../utils");
 
 module.exports = {
@@ -21,7 +23,7 @@ module.exports = {
 
     try {
       let student = await Student.findByPk(studentId, {
-        attributes: ["id", "ra", "name", "email", "image"],
+        attributes: ["id", "ra", "name", "email"],
       });
 
       //se aluno não encontrado, retornar not found
@@ -64,18 +66,16 @@ module.exports = {
         studentName: student.name,
       });
 
-      setTimeout(() => {
-        //retornar resposta de sucesso
-        res.status(201).send({
-          student: {
-            studentId: student.id,
-            name: student.name,
-            ra: student.ra,
-            email: student.email,
-          },
-          token,
-        });
-      }, 3000);
+      //retornar resposta de sucesso
+      res.status(201).send({
+        student: {
+          studentId: student.id,
+          name: student.name,
+          ra: student.ra,
+          email: student.email,
+        },
+        token,
+      });
     } catch (error) {
       console.log(error);
       res.status(500).send(error);

@@ -4,15 +4,10 @@ const { Op } = require("sequelize");
 
 module.exports = {
   async index(req, res) {
-    const keyWord = req.query.word;
+    const { search } = req.query;
+
     try {
-      const search = await Question.findAll({
-        where: {
-          [Op.or]: {
-            title: { [Op.like]: `%${keyWord}%` },
-            description: { [Op.like]: `%${keyWord}%` },
-          },
-        },
+      const questions = await Question.findAll({
         attributes: [
           "id",
           "title",
@@ -20,11 +15,17 @@ module.exports = {
           "image",
           "gist",
           "created_at",
+          "StudentId",
         ],
         include: [
           {
             association: "Student",
             attributes: ["id", "name", "image"],
+          },
+          {
+            association: "Categories",
+            attributes: ["id", "description"],
+            through: { attributes: [] },
           },
           {
             association: "Answers",
@@ -34,19 +35,26 @@ module.exports = {
               attributes: ["id", "name", "image"],
             },
           },
-          {
-            association: "Categories",
-            through: {
-              attributes: [],
-            },
-            attributes: ["id", "description"],
-          },
         ],
+        order: [["created_at", "DESC"]],
+        where: {
+          [Op.or]: [
+            {
+              title: {
+                [Op.substring]: search,
+              },
+            },
+            {
+              description: {
+                [Op.substring]: search,
+              },
+            },
+          ],
+        },
       });
 
-      res.send(search);
+      res.send(questions);
     } catch (error) {
-      console.log(error);
       res.status(500).send(error);
     }
   },
@@ -54,7 +62,7 @@ module.exports = {
   async store(req, res) {
     const { title, description, gist, categories } = req.body;
 
-    const categoriesArray = categories.split(",");
+    const categoriesArr = categories.split(",");
 
     const { studentId } = req;
 
@@ -74,7 +82,7 @@ module.exports = {
         gist,
       });
 
-      await question.addCategories(categoriesArray);
+      await question.addCategories(categoriesArr);
 
       //retorno sucesso
       res.status(201).send({
@@ -106,7 +114,7 @@ module.exports = {
       if (!question)
         return res.status(404).send({ error: "Questão não encontrada" });
 
-      if (question.StudentId != studentId)
+      if (question.student_id != studentId)
         return res.status(401).send({ error: "Não autorizado" });
 
       question.title = title;

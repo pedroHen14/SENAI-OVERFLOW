@@ -19,8 +19,6 @@ module.exports = {
           model: "questions",
           key: "id"
         },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE"
       },
       student_id: {
         type: Sequelize.INTEGER,
@@ -29,8 +27,6 @@ module.exports = {
           model: "students",
           key: "id"
         },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE"
       },
       created_at: {
         type: Sequelize.DATE,

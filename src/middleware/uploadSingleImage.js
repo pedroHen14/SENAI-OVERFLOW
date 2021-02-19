@@ -3,16 +3,16 @@ const Multer = require("multer");
 const uploadSingleImage = Multer({
   storage: Multer.memoryStorage(),
   fileFilter: (req, file, callback) => {
-    let alowedTypes = ["image/png", "image/jpeg"];
+    let allowedTypes = ["image/png", "image/jpeg"];
 
-    if (alowedTypes.includes(file.mimetype)) {
+    if (allowedTypes.includes(file.mimetype)) {
       callback(null, true);
     } else {
-      callback(new Error("Tipo do arquivo invalido"));
+      callback(new Error("Tipo do arquivo inválido"));
     }
   },
   limits: {
-    fileSize: 1024 * 1024 * 2,
+    fileSize: 1024 * 1024 * 2, //máximo de 2Mb
   },
 });
 

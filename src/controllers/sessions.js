@@ -1,5 +1,7 @@
 const Student = require("../models/Student");
 const bcrypt = require("bcryptjs");
+const auth = require("../config/auth.json");
+const jwt = require("jsonwebtoken");
 const { generateToken } = require("../utils");
 
 module.exports = {
@@ -14,7 +16,7 @@ module.exports = {
       });
 
       if (!student || !bcrypt.compareSync(password, student.password))
-        return res.status(403).send({ error: "Usuario e/ou senha invalidos" });
+        return res.status(403).send({ error: "Usuário e/ou senha inválidos" });
 
       const token = generateToken({
         studentId: student.id,
