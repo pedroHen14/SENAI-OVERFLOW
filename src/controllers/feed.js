@@ -1,4 +1,3 @@
-const { index } = require("./questions");
 const Question = require("../models/Question");
 
 module.exports = {

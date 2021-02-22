@@ -1,7 +1,4 @@
 const Student = require("../models/Student");
-const bcrypt = require("bcryptjs");
-const { generateToken } = require("../utils");
-const { store } = require("./students");
 
 module.exports = {
   async store(req, res) {
